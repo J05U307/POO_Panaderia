@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import data.Data;
+import entity.Cliente;
 import entity.Producto;
+import entity.TipoPago;
 
 public class Login extends javax.swing.JFrame {
 
@@ -22,8 +24,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    private List<Usuario> usuarios = new ArrayList<>();
-
+    
     public Login() {
 
         initComponents();
@@ -48,9 +49,31 @@ public class Login extends javax.swing.JFrame {
         Usuario user1 = new Usuario(1, "carlos", "123", emple1, vend);
         Usuario user2 = new Usuario(2, "maria", "222", emple2, caj);
         Usuario user3 = new Usuario(3, "jose", "333", emple3, admi);
-        usuarios.add(user1);
-        usuarios.add(user2);
-        usuarios.add(user3);
+        Data.usuarios.add(user1);
+        Data.usuarios.add(user2);
+        Data.usuarios.add(user3);
+
+        // Tipos de pago : 
+        TipoPago ti1 = new TipoPago(1, "Efectivo");
+        TipoPago ti2 = new TipoPago(1, "Tarjeta");
+        TipoPago ti3 = new TipoPago(1, "Yape");
+        TipoPago ti4 = new TipoPago(1, "Plin");
+        Data.tipoPagos.add(ti1);
+        Data.tipoPagos.add(ti2);
+        Data.tipoPagos.add(ti3);
+        Data.tipoPagos.add(ti4);
+        
+        // Datos cliente
+        Cliente cli1 = new Cliente(1, "Carlos", "Ramírez", "72154896");
+        Cliente cli2 = new Cliente(2, "María", "López", "74851236");
+        Cliente cli3 = new Cliente(3, "José", "Gutiérrez", "73589412");
+        Cliente cli4 = new Cliente(4, "Ana", "Torres", "70894521");
+        Cliente cli5 = new Cliente(5, "Luis", "Fernández", "75632148");
+        Data.clientes.add(cli1);
+        Data.clientes.add(cli2);
+        Data.clientes.add(cli3);
+        Data.clientes.add(cli4);
+        Data.clientes.add(cli5);
 
         // Datos Categoria
         Categoria ca1 = new Categoria(1, "Pan");
@@ -64,25 +87,23 @@ public class Login extends javax.swing.JFrame {
         Data.categorias.add(ca4);
         Data.categorias.add(ca5);
 
-        
         // Datos Productos
         Producto p1 = new Producto(1, "Pan francés", 0.50, 50, ca1); // Pan
         Producto p2 = new Producto(2, "Torta chocolate", 20.0, 10, Data.categorias.get(1));
-        Producto p3 = new Producto(3, "Queque vainilla", 8.0, 15, Data.categorias.get(2)); 
-        Producto p4 = new Producto(4, "Pan integral", 1.20, 30, Data.categorias.get(3)); 
-        Producto p5 = new Producto(5, "Producto especial", 2.0, 0, Data.categorias.get(4)); 
+        Producto p3 = new Producto(3, "Queque vainilla", 8.0, 15, Data.categorias.get(2));
+        Producto p4 = new Producto(4, "Pan integral", 1.20, 30, Data.categorias.get(3));
+        Producto p5 = new Producto(5, "Producto especial", 2.0, 0, Data.categorias.get(4));
         Data.productos.add(p1);
         Data.productos.add(p2);
         Data.productos.add(p3);
         Data.productos.add(p4);
         Data.productos.add(p5);
 
-    
     }
 
     private void login(String user, String pass) {
 
-        for (Usuario u : usuarios) {
+        for (Usuario u : Data.usuarios) {
             if (u.getUser().equals(user) && u.getPassword().equals(pass)) {
 
                 Inicio ini = new Inicio();

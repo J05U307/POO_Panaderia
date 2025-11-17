@@ -110,7 +110,6 @@ public class CategoriaPanel extends javax.swing.JPanel {
 
     private void listar() {
         DefaultTableModel modelo = (DefaultTableModel) tablaCategoria.getModel();
-
         modelo.setRowCount(0);
 
         // Recorrer la lista de categorías
