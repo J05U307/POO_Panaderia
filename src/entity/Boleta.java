@@ -17,8 +17,8 @@ public class Boleta extends Comprobante {
     public Boleta() {
     }
 
-    public Boleta(String dni, int id, Pedido pedido, LocalDateTime fecha) {
-        super(id, pedido, fecha);
+    public Boleta(String dni, int id, Pedido pedido, LocalDateTime fecha, TipoPago pago) {
+        super(id, pedido, fecha, pago);
         this.dni = dni;
     }
 

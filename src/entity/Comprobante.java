@@ -14,15 +14,17 @@ public class Comprobante {
 
     private int id;
     private Pedido pedido;
-    private LocalDateTime fecha; 
+    private LocalDateTime fecha;
+    private TipoPago pago;
 
     public Comprobante() {
     }
 
-    public Comprobante(int id, Pedido pedido, LocalDateTime fecha) {
+    public Comprobante(int id, Pedido pedido, LocalDateTime fecha, TipoPago pago) {
         this.id = id;
         this.pedido = pedido;
         this.fecha = fecha;
+        this.pago = pago;
     }
 
     public int getId() {
@@ -48,6 +50,13 @@ public class Comprobante {
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
-    
-    
+
+    public TipoPago getPago() {
+        return pago;
+    }
+
+    public void setPago(TipoPago pago) {
+        this.pago = pago;
+    }
+
 }

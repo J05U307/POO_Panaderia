@@ -4,27 +4,21 @@
  */
 package view;
 
-import entity.Categoria;
-import entity.Empleado;
-import entity.Rol;
 import entity.Usuario;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
-import data.Data;
-import entity.Cliente;
-import entity.Producto;
-import entity.TipoPago;
+import service.EmpleadoService;
+import service.RolService;
+import service.UsuarioService;
 
 public class Login extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
-    /**
-     * Creates new form Login
-     */
-    
+    private RolService serviceRol = new RolService();
+    private EmpleadoService serviceEmpleado = new EmpleadoService();
+    private UsuarioService serviceUsuario = new UsuarioService();
+
     public Login() {
 
         initComponents();
@@ -35,75 +29,28 @@ public class Login extends javax.swing.JFrame {
 
     // Creacion de objetos 
     private void cargarDatos() {
-        // Creacion de rol
-        Rol vend = new Rol(1, "Vendedor");
-        Rol caj = new Rol(2, "Cajero");
-        Rol admi = new Rol(3, "Administrador");
 
-        // Creacion de empleados: 
-        Empleado emple1 = new Empleado(1, "Carlos", "Ramirez", "75481236", "987654321", 25, LocalDate.of(2023, 5, 10), 1800);
-        Empleado emple2 = new Empleado(2, "Maria", "Lopez", "70894512", "912345678", 30, LocalDate.of(2022, 11, 3), 2200);
-        Empleado emple3 = new Empleado(3, "Jose", "Fernandez", "72145896", "900112233", 28, LocalDate.of(2024, 1, 20), 1950);
+        if (!serviceUsuario.listar().isEmpty()) {
+            return;
+        }
 
-        // Creacion de Usuarios: 
-        Usuario user1 = new Usuario(1, "carlos", "123", emple1, vend);
-        Usuario user2 = new Usuario(2, "maria", "222", emple2, caj);
-        Usuario user3 = new Usuario(3, "jose", "333", emple3, admi);
-        Data.usuarios.add(user1);
-        Data.usuarios.add(user2);
-        Data.usuarios.add(user3);
+        serviceRol.agregar("Vendedor");
+        serviceRol.agregar("Cajero");
+        serviceRol.agregar("Administrador");
 
-        // Tipos de pago : 
-        TipoPago ti1 = new TipoPago(1, "Efectivo");
-        TipoPago ti2 = new TipoPago(1, "Tarjeta");
-        TipoPago ti3 = new TipoPago(1, "Yape");
-        TipoPago ti4 = new TipoPago(1, "Plin");
-        Data.tipoPagos.add(ti1);
-        Data.tipoPagos.add(ti2);
-        Data.tipoPagos.add(ti3);
-        Data.tipoPagos.add(ti4);
-        
-        // Datos cliente
-        Cliente cli1 = new Cliente(1, "Carlos", "Ramírez", "72154896");
-        Cliente cli2 = new Cliente(2, "María", "López", "74851236");
-        Cliente cli3 = new Cliente(3, "José", "Gutiérrez", "73589412");
-        Cliente cli4 = new Cliente(4, "Ana", "Torres", "70894521");
-        Cliente cli5 = new Cliente(5, "Luis", "Fernández", "75632148");
-        Data.clientes.add(cli1);
-        Data.clientes.add(cli2);
-        Data.clientes.add(cli3);
-        Data.clientes.add(cli4);
-        Data.clientes.add(cli5);
+        serviceEmpleado.agregar("Carlos", "Ramirez", "75481236", "987654321", 20, LocalDate.of(2023, 5, 10), 1800);
+        serviceUsuario.agregar("carlos", "123", serviceEmpleado.listar().get(0), serviceRol.listar().get(0));
 
-        // Datos Categoria
-        Categoria ca1 = new Categoria(1, "Pan");
-        Categoria ca2 = new Categoria(2, "Torta");
-        Categoria ca3 = new Categoria(3, "queques");
-        Categoria ca4 = new Categoria(4, "nose");
-        Categoria ca5 = new Categoria(5, "nosejas");
-        Data.categorias.add(ca1);
-        Data.categorias.add(ca2);
-        Data.categorias.add(ca3);
-        Data.categorias.add(ca4);
-        Data.categorias.add(ca5);
+        serviceEmpleado.agregar("Maria", "Lopez", "70894512", "912345678", 20, LocalDate.of(2022, 11, 3), 2200);
+        serviceUsuario.agregar("maria", "123", serviceEmpleado.listar().get(1), serviceRol.listar().get(1));
 
-        // Datos Productos
-        Producto p1 = new Producto(1, "Pan francés", 0.50, 50, ca1); // Pan
-        Producto p2 = new Producto(2, "Torta chocolate", 20.0, 10, Data.categorias.get(1));
-        Producto p3 = new Producto(3, "Queque vainilla", 8.0, 15, Data.categorias.get(2));
-        Producto p4 = new Producto(4, "Pan integral", 1.20, 30, Data.categorias.get(3));
-        Producto p5 = new Producto(5, "Producto especial", 2.0, 0, Data.categorias.get(4));
-        Data.productos.add(p1);
-        Data.productos.add(p2);
-        Data.productos.add(p3);
-        Data.productos.add(p4);
-        Data.productos.add(p5);
-
+        serviceEmpleado.agregar("Jose", "Fernandez", "72145896", "900112233", 28, LocalDate.of(2024, 1, 20), 3000);
+        serviceUsuario.agregar("camila", "333", serviceEmpleado.listar().get(2), serviceRol.listar().get(2));
     }
 
     private void login(String user, String pass) {
 
-        for (Usuario u : Data.usuarios) {
+        for (Usuario u : serviceUsuario.listar()) {
             if (u.getUser().equals(user) && u.getPassword().equals(pass)) {
 
                 Inicio ini = new Inicio();

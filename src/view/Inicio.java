@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -44,6 +45,10 @@ public class Inicio extends javax.swing.JFrame {
 
     private void mostrarCliente() {
         mostrarPantalla("cliente", ClientePanel::new);
+    }
+
+    private void mostrarEmpleado() {
+        mostrarPantalla("empleado", EmpleadoPanel::new);
     }
 
     private void mostrarPantalla(String nombre, Supplier<JPanel> constructor) {
@@ -93,9 +98,14 @@ public class Inicio extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
         jMenu11 = new javax.swing.JMenu();
-        jMenu16 = new javax.swing.JMenu();
+        jMenu10 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
 
         jMenu1.setText("jMenu1");
@@ -135,17 +145,17 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Panel_carga.setBackground(new java.awt.Color(255, 255, 204));
+        Panel_carga.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout Panel_cargaLayout = new javax.swing.GroupLayout(Panel_carga);
         Panel_carga.setLayout(Panel_cargaLayout);
         Panel_cargaLayout.setHorizontalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 889, Short.MAX_VALUE)
+            .addGap(0, 1108, Short.MAX_VALUE)
         );
         Panel_cargaLayout.setVerticalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
+            .addGap(0, 689, Short.MAX_VALUE)
         );
 
         jMenu5.setText("Inicio");
@@ -167,20 +177,6 @@ public class Inicio extends javax.swing.JFrame {
         jMenu9.setText("Cobrar Venta");
         jMenuBar1.add(jMenu9);
 
-        jMenu8.setText("Producto");
-        jMenu8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu8MouseClicked(evt);
-            }
-        });
-        jMenu8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu8ActionPerformed(evt);
-            }
-        });
-        jMenuBar1.add(jMenu8);
-
-        jMenu11.setText("categoria");
         jMenu11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu11MouseClicked(evt);
@@ -188,15 +184,59 @@ public class Inicio extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu11);
 
-        jMenu16.setText("Cliente");
-        jMenu16.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu16MouseClicked(evt);
+        jMenu10.setText("Gestionar");
+
+        jMenuItem3.setText("Producto");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu16);
+        jMenu10.add(jMenuItem3);
 
-        jMenu7.setText("Reportes");
+        jMenuItem4.setText("Categoria");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu10.add(jMenuItem4);
+
+        jMenuItem8.setText("Cliente");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu10.add(jMenuItem8);
+
+        jMenuItem9.setText("Empleado");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu10.add(jMenuItem9);
+
+        jMenuItem10.setText("Pago");
+        jMenu10.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu10);
+
+        jMenu8.setText("Reportes");
+        jMenuBar1.add(jMenu8);
+
+        jMenu7.setText("Salir");
+        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu7MouseClicked(evt);
+            }
+        });
+        jMenu7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu7ActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -229,17 +269,51 @@ public class Inicio extends javax.swing.JFrame {
         mostrarCategoria();
     }//GEN-LAST:event_jMenu11MouseClicked
 
-    private void jMenu16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu16MouseClicked
-        mostrarCliente();
-    }//GEN-LAST:event_jMenu16MouseClicked
-
-    private void jMenu8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu8ActionPerformed
-
-    }//GEN-LAST:event_jMenu8ActionPerformed
-
-    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         mostrarProducto();
-    }//GEN-LAST:event_jMenu8MouseClicked
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        mostrarCategoria();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        mostrarCliente();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        mostrarEmpleado();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu7ActionPerformed
+
+    }//GEN-LAST:event_jMenu7ActionPerformed
+
+    private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
+        // Opciones personalizadas
+        Object[] opciones = {"Regresar al Login", "Salir", "Cancelar"};
+
+        // Mostrar diálogo de confirmación con tres opciones
+        int respuesta = JOptionPane.showOptionDialog(
+                null,
+                "¿Qué deseas hacer?",
+                "Confirmación",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[2] // Opción por defecto seleccionada (Cancelar)
+        );
+
+        // Verificar la respuesta del usuario
+        if (respuesta == 0) { // Regresar al Login
+            this.dispose(); // Cierra la ventana actual
+            new Login().setVisible(true); // Abre la ventana de login (Asegúrate de tener una clase Login)
+        } else if (respuesta == 1) { // Salir del programa
+            System.exit(0);
+        }
+        // Si selecciona "Cancelar" (respuesta == 2), no se hace nada
+    }//GEN-LAST:event_jMenu7MouseClicked
 
     /**
      * @param args the command line arguments
@@ -271,12 +345,12 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
     private javax.swing.JMenu jMenu15;
-    private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -289,9 +363,14 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }

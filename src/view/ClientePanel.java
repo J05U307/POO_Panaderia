@@ -4,10 +4,10 @@
  */
 package view;
 
-import data.Data;
 import entity.Cliente;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import service.ClienteService;
 
 /**
  *
@@ -15,12 +15,35 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClientePanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ClientePanel
-     */
+    private ClienteService service = new ClienteService();
+
     public ClientePanel() {
         initComponents();
         listar();
+    }
+
+    private void elimar() {
+        int fila = tablaCliente.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para elimar");
+            return;
+        }
+
+        int id = (int) tablaCliente.getValueAt(fila, 0);
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que deseas eliminar este cliente?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            service.eliminar(id);
+            listar();
+            limpiar();
+            JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente");
+        }
     }
 
     private void editar() {
@@ -30,12 +53,13 @@ public class ClientePanel extends javax.swing.JPanel {
             return;
         }
 
+        int id = (int) tablaCliente.getValueAt(fila, 0);
         String nombre = txtNombre.getText().trim();
         String apellido = txtApellido.getText().trim();
         String dni = txtDni.getText().trim();
 
         if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un nombre de categoría");
+            JOptionPane.showMessageDialog(this, "Ingrese todos los datos para editar");
             return;
         }
 
@@ -45,33 +69,10 @@ public class ClientePanel extends javax.swing.JPanel {
             return;
         }
 
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de que deseas editar?",
-                "Confirmación",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-
-            // 4. Obtener el ID de la categoría seleccionada desde la tabla
-            int idcliente = (int) tablaCliente.getValueAt(fila, 0);
-
-            // 5. Buscar la categoría en la lista y editarla
-            for (Cliente c : Data.clientes) {
-                if (c.getId() == idcliente) {
-                    c.setNombre(nombre);
-                    c.setApellido(apellido);
-                    c.setDni(dni);
-                    break;
-                }
-            }
-
-            listar();
-            limpiar();
-
-            JOptionPane.showMessageDialog(this, "Cliente editado correctamente");
-        }
+        service.editar(id, nombre, apellido, dni);
+        listar();
+        limpiar();
+        JOptionPane.showMessageDialog(this, "Cliente editado correctamente");
 
     }
 
@@ -79,7 +80,7 @@ public class ClientePanel extends javax.swing.JPanel {
 
         int fila = tablaCliente.getSelectedRow();
 
-        if (fila != 1) {
+        if (fila != -1) {
             // OBJETER
             String nombreOb = (String) tablaCliente.getValueAt(fila, 1);
             String apellidoOb = (String) tablaCliente.getValueAt(fila, 2);
@@ -110,22 +111,10 @@ public class ClientePanel extends javax.swing.JPanel {
             return;
         }
 
-        // Nuevo ID
-        int nuevoId = 1;
-        if (!Data.clientes.isEmpty()) {
-            nuevoId = Data.clientes.get(Data.clientes.size() - 1).getId() + 1;
-        }
-
-        // Crear cliente
-        Cliente cli = new Cliente(nuevoId, nombre, apellido, dni);
-
-        // Agregar a la lista
-        Data.clientes.add(cli);
-
-        JOptionPane.showMessageDialog(this, "Cliente agregado correctamente");
-
-        limpiar();
+        service.agregar(nombre, apellido, dni);
         listar();
+        limpiar();
+        JOptionPane.showMessageDialog(this, "Cliente agregado correctamente");
     }
 
     private void limpiar() {
@@ -141,7 +130,7 @@ public class ClientePanel extends javax.swing.JPanel {
         modelo.setRowCount(0);
 
         // Recorrer: 
-        for (Cliente c : Data.clientes) {
+        for (Cliente c : service.listar()) {
             Object[] fila = {
                 c.getId(),
                 c.getNombre(),
@@ -173,6 +162,7 @@ public class ClientePanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText("Nombre");
 
@@ -231,6 +221,13 @@ public class ClientePanel extends javax.swing.JPanel {
 
         jLabel4.setText("Cliente");
 
+        jButton1.setText("Eliminar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -254,13 +251,16 @@ public class ClientePanel extends javax.swing.JPanel {
                             .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtDni, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 14, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEditar)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAgregar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEditar)))))
                 .addGap(59, 59, 59)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -290,7 +290,9 @@ public class ClientePanel extends javax.swing.JPanel {
                             .addComponent(btnAgregar)
                             .addComponent(btnEditar)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -311,11 +313,16 @@ public class ClientePanel extends javax.swing.JPanel {
         editar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        elimar();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

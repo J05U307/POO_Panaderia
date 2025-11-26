@@ -18,8 +18,8 @@ public class Factura extends Comprobante {
     public Factura() {
     }
 
-    public Factura(String ruc, String razonSocial, int id, Pedido pedido, LocalDateTime fecha) {
-        super(id, pedido, fecha);
+    public Factura(String ruc, String razonSocial, int id, Pedido pedido, LocalDateTime fecha, TipoPago pago) {
+        super(id, pedido, fecha, pago);
         this.ruc = ruc;
         this.razonSocial = razonSocial;
     }
@@ -39,8 +39,5 @@ public class Factura extends Comprobante {
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
-    
-    
-    
-    
+
 }

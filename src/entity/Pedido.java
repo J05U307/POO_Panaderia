@@ -11,24 +11,24 @@ import java.time.LocalDateTime;
  * @author josue
  */
 public class Pedido {
-    
-    private int id; 
-    private LocalDateTime fecha; 
-    private Cliente cliente; 
-    private double total; 
-    private TipoPago pago; 
+
+    private int id;
+    private LocalDateTime fecha;
+    private Cliente cliente;
+    private double total;
     private Usuario usuario;
+    private String estado;
 
     public Pedido() {
     }
 
-    public Pedido(int id, LocalDateTime fecha, Cliente cliente, double total, TipoPago pago, Usuario usuario) {
+    public Pedido(int id, LocalDateTime fecha, Cliente cliente, double total, Usuario usuario, String estado) {
         this.id = id;
         this.fecha = fecha;
         this.cliente = cliente;
         this.total = total;
-        this.pago = pago;
         this.usuario = usuario;
+        this.estado = estado;
     }
 
     public int getId() {
@@ -63,14 +63,6 @@ public class Pedido {
         this.total = total;
     }
 
-    public TipoPago getPago() {
-        return pago;
-    }
-
-    public void setPago(TipoPago pago) {
-        this.pago = pago;
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -78,7 +70,13 @@ public class Pedido {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
-    
-    
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
 }

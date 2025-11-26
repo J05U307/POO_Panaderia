@@ -4,11 +4,12 @@
  */
 package view;
 
-import data.Data;
 import entity.Categoria;
 import entity.Producto;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import service.CategoriaService;
+import service.ProductoService;
 
 /**
  *
@@ -16,13 +17,38 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ProductoPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form GestionarProducto
-     */
+    private ProductoService service = new ProductoService();
+    private CategoriaService serviceCategoria = new CategoriaService();
+
     public ProductoPanel() {
         initComponents();
         cargarComboCategoria();
         listar();
+    }
+
+    private void eliminar() {
+        int fila = tablaProducto.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar");
+            return;
+        }
+
+        int id = (int) tablaProducto.getValueAt(fila, 0);
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que deseas eliminar este Producto?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            service.eliminar(id);
+            listar();
+            limpiar();
+            JOptionPane.showMessageDialog(this, "Producto eliminado correctamente");
+        }
     }
 
     private void editar() {
@@ -34,6 +60,7 @@ public class ProductoPanel extends javax.swing.JPanel {
             return;
         }
 
+        int id = (int) tablaProducto.getValueAt(fila, 0);
         String nombre = txtNombre.getText().trim();
         String precioTxt = txtPrecio.getText().trim();
         String stockTxt = txtStock.getText().trim();
@@ -57,36 +84,12 @@ public class ProductoPanel extends javax.swing.JPanel {
             return;
         }
 
-        // Confirmación
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de que deseas editar este producto?",
-                "Confirmación",
-                JOptionPane.YES_NO_OPTION
-        );
+        Categoria categoria = serviceCategoria.listar().get(categoriaIndex - 1);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-
-            // Obtener ID del producto desde la tabla
-            int idProducto = (int) tablaProducto.getValueAt(fila, 0);
-
-            // Buscar producto en la lista
-            for (Producto p : Data.productos) {
-                if (p.getId() == idProducto) {
-
-                    // EDITAR CAMPOS
-                    p.setNombre(nombre);
-                    p.setPrecio(precio);
-                    p.setStock(stock);
-                    Categoria categoriaSeleccionada = Data.categorias.get(categoriaIndex - 1);
-                    p.setCategoria(categoriaSeleccionada);
-                    break;
-                }
-            }
-            listar();
-            limpiar();
-            JOptionPane.showMessageDialog(this, "Producto editado correctamente");
-        }
+        service.editar(id, nombre, precio, stock, categoria);
+        listar();
+        limpiar();
+        JOptionPane.showMessageDialog(this, "Producto editado correctamente");
     }
 
     private void agregar() {
@@ -112,26 +115,15 @@ public class ProductoPanel extends javax.swing.JPanel {
             return;
         }
 
-        // Generar nuevo ID
-        int nuevoId = 1;
-        if (!Data.productos.isEmpty()) {
-            nuevoId = Data.productos.get(Data.productos.size() - 1).getId() + 1;
-        }
-
         // Obtener la categoría seleccionada
-        Categoria categoriaSeleccionada = Data.categorias.get(categoriaIndex - 1);
+        Categoria categoria = serviceCategoria.listar().get(categoriaIndex - 1);
+
         // -1 porque el primer item es "Seleccione categoría"
+        service.agregar(nombre, precio, stock, categoria);
 
-        // Crear producto
-        Producto pro = new Producto(nuevoId, nombre, precio, stock, categoriaSeleccionada);
-
-        // Agregar a la lista
-        Data.productos.add(pro);
-
-        JOptionPane.showMessageDialog(this, "Producto agregado correctamente");
-
-        limpiar();
         listar();
+        limpiar();
+        JOptionPane.showMessageDialog(this, "Producto agregado correctamente");
     }
 
     private void limpiar() {
@@ -140,14 +132,6 @@ public class ProductoPanel extends javax.swing.JPanel {
         txtStock.setText("");
         comboCategoria.setSelectedIndex(0);
         btnAgregar.setEnabled(true);
-    }
-
-    public void cargarComboCategoria() {
-        comboCategoria.removeAllItems();
-        comboCategoria.addItem("Seleccione categoría");
-        for (Categoria c : Data.categorias) {
-            comboCategoria.addItem(c.getNombre());
-        }
     }
 
     private void obtenerDatosTabla() {
@@ -184,7 +168,7 @@ public class ProductoPanel extends javax.swing.JPanel {
         DefaultTableModel modelo = (DefaultTableModel) tablaProducto.getModel();
         modelo.setRowCount(0);
 
-        for (Producto p : Data.productos) {
+        for (Producto p : service.listar()) {
             Object[] fila = {
                 p.getId(),
                 p.getNombre(),
@@ -193,6 +177,14 @@ public class ProductoPanel extends javax.swing.JPanel {
                 p.getCategoria().getNombre()
             };
             modelo.addRow(fila);
+        }
+    }
+
+    public void cargarComboCategoria() {
+        comboCategoria.removeAllItems();
+        comboCategoria.addItem("Seleccione categoría");
+        for (Categoria c : serviceCategoria.listar()) {
+            comboCategoria.addItem(c.getNombre());
         }
     }
 
@@ -219,6 +211,7 @@ public class ProductoPanel extends javax.swing.JPanel {
         btnNuevo = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText("Producto");
 
@@ -283,6 +276,13 @@ public class ProductoPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Eliminar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -311,9 +311,12 @@ public class ProductoPanel extends javax.swing.JPanel {
                 .addGap(94, 94, 94)
                 .addComponent(btnNuevo)
                 .addGap(18, 18, 18)
-                .addComponent(btnAgregar)
-                .addGap(18, 18, 18)
-                .addComponent(btnEditar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -347,7 +350,9 @@ public class ProductoPanel extends javax.swing.JPanel {
                     .addComponent(btnNuevo)
                     .addComponent(btnAgregar)
                     .addComponent(btnEditar))
-                .addGap(76, 76, 76))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(41, 41, 41))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -368,12 +373,17 @@ public class ProductoPanel extends javax.swing.JPanel {
         editar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        eliminar();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> comboCategoria;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
