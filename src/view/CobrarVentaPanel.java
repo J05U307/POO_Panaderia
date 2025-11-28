@@ -17,6 +17,7 @@ import service.ComprobanteService;
 import service.DetalleVentaService;
 import service.PedidoService;
 import service.TipoPagoService;
+import utils.PedidoEstadoRenderer;
 
 /**
  *
@@ -31,6 +32,8 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
 
     public CobrarVentaPanel() {
         initComponents();
+        configurarTablaPedidos();
+        configurarTablaDetallePedido();
         cargarCompoTipoPago();
         cargarComboComprobante();
         listarPedidosEnProceso();
@@ -200,6 +203,59 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         comboComprobante.addItem("Factura");
     }
 
+    private void configurarTablaPedidos() {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "ID", "Usuario", "Cliente", "Fecha", "Hora", "Total", "Estado"
+                }
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Todas no editables
+            }
+        };
+
+        tablaPedidos.setModel(modelo);
+
+        // Ajustes opcionales de tamaño
+        tablaPedidos.getColumnModel().getColumn(0).setPreferredWidth(40); // ID
+        tablaPedidos.getColumnModel().getColumn(1).setPreferredWidth(120); // Usuario
+        tablaPedidos.getColumnModel().getColumn(2).setPreferredWidth(120); // Cliente
+        tablaPedidos.getColumnModel().getColumn(3).setPreferredWidth(85); // Fecha
+        tablaPedidos.getColumnModel().getColumn(4).setPreferredWidth(70); // Hora
+        tablaPedidos.getColumnModel().getColumn(5).setPreferredWidth(60); // Total
+        tablaPedidos.getColumnModel().getColumn(6).setPreferredWidth(70); // Estado
+
+        PedidoEstadoRenderer renderer = new PedidoEstadoRenderer();
+        for (int i = 0; i < tablaPedidos.getColumnCount(); i++) {
+            tablaPedidos.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
+    }
+
+    private void configurarTablaDetallePedido() {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "IdDetVenta", "Producto", "Cantidad", "Precio Uni.", "Subtotal"
+                }
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // No editables
+            }
+        };
+
+        tablaDetallePedido.setModel(modelo);
+
+        // Ajustes de tamaño
+        tablaDetallePedido.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tablaDetallePedido.getColumnModel().getColumn(1).setPreferredWidth(180);
+        tablaDetallePedido.getColumnModel().getColumn(2).setPreferredWidth(60);
+        tablaDetallePedido.getColumnModel().getColumn(3).setPreferredWidth(80);
+        tablaDetallePedido.getColumnModel().getColumn(4).setPreferredWidth(80);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,6 +283,7 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         labelTotal = new javax.swing.JLabel();
         comboComprobante = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
+        btnHistorial = new javax.swing.JButton();
 
         jLabel1.setText("Cola de pedidos");
 
@@ -309,6 +366,13 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
             }
         });
 
+        btnHistorial.setText("Historial Pedidos");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -320,7 +384,9 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -355,7 +421,8 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(btnHistorial))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,11 +466,16 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       crearComprobante();
+        crearComprobante();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHistorial;
     private javax.swing.JComboBox<String> comboComprobante;
     private javax.swing.JComboBox<String> comboTipoPago;
     private javax.swing.JButton jButton1;

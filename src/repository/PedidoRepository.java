@@ -5,7 +5,9 @@
 package repository;
 
 import entity.Pedido;
+import entity.Usuario;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import utils.SerializadorUtil;
@@ -22,8 +24,7 @@ public class PedidoRepository {
     public PedidoRepository() {
         pedidos = SerializadorUtil.cargarLista(FILE_PATH);
     }
-    
-    
+
     //Listar
     public List<Pedido> findAll() {
         return pedidos;
@@ -61,7 +62,29 @@ public class PedidoRepository {
         }
         return null;
     }
-    
 
-    
+    public List<Pedido> findByFecha(LocalDate fechaBuscada) {
+        List<Pedido> resultado = new ArrayList<>();
+
+        for (Pedido p : findAll()) {
+            if (p.getFecha().toLocalDate().equals(fechaBuscada)) {
+                resultado.add(p);
+            }
+        }
+
+        return resultado;
+    }
+
+    public List<Pedido> findByUsuario(Usuario usuario) {
+        List<Pedido> resultado = new ArrayList<>();
+
+        for (Pedido p : pedidos) {
+            if (p.getUsuario().getId() == usuario.getId()) {
+                resultado.add(p);
+            }
+        }
+
+        return resultado;
+    }
+
 }

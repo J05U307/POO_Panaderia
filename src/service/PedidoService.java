@@ -7,6 +7,7 @@ package service;
 import entity.Cliente;
 import entity.Pedido;
 import entity.Usuario;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,6 @@ public class PedidoService {
         return enProceso;
     }
 
-    
     // lista de pedidos que ya fueron pagados: 
     public List<Pedido> listarPedidosPagados() {
         List<Pedido> todos = repo.findAll();
@@ -89,4 +89,13 @@ public class PedidoService {
 
         return enProceso;
     }
+
+    public List<Pedido> listarPorFecha(LocalDate fecha) {
+        return repo.findByFecha(fecha);
+    }
+
+    public List<Pedido> listarPorUsuario(Usuario usuario) {
+        return repo.findByUsuario(usuario);
+    }
+
 }

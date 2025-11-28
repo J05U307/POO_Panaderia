@@ -57,6 +57,24 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
 
     }
 
+    private void verPedidosEnviados() {
+        javax.swing.JDialog dialog = new javax.swing.JDialog();
+        // Configurar el JDialog
+        dialog.setUndecorated(false); // Sin bordes
+        dialog.setModal(true); // No bloquea la ventana principal
+        dialog.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        dialog.setLocationRelativeTo(null); // Centrar en la pantalla
+
+        // Crear el panel de cliente y agregarlo al diálogo
+        PedidosEnviadosPanel pedPanel = new PedidosEnviadosPanel(usuarioLogueado);
+
+        pedPanel.setSize(dialog.getSize());
+        dialog.add(pedPanel);
+
+        // Hacer visible el diálogo
+        dialog.setVisible(true);
+    }
+
     public void crearPedido() {
 
         DefaultTableModel model = (DefaultTableModel) tablaDetalleVenta.getModel();
@@ -401,6 +419,8 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         labelNombreCliente = new javax.swing.JLabel();
         labelIDCliente = new javax.swing.JLabel();
+        btnPedidosEnviados = new javax.swing.JButton();
+        btnNuevoCliente = new javax.swing.JButton();
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -486,6 +506,20 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
 
         labelIDCliente.setText(".....");
 
+        btnPedidosEnviados.setText("Pedididos Enviados");
+        btnPedidosEnviados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPedidosEnviadosActionPerformed(evt);
+            }
+        });
+
+        btnNuevoCliente.setText("Nuevo");
+        btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoClienteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -493,7 +527,11 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPedidosEnviados)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -503,7 +541,9 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNuevoCliente))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(35, 35, 35)
@@ -532,9 +572,11 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPedidosEnviados)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtproducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -543,10 +585,11 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNuevoCliente))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35))
@@ -578,10 +621,34 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
         crearPedido();
     }//GEN-LAST:event_btnEnviarCajeroActionPerformed
 
+    private void btnPedidosEnviadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosEnviadosActionPerformed
+        verPedidosEnviados();
+    }//GEN-LAST:event_btnPedidosEnviadosActionPerformed
+
+    private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
+        javax.swing.JDialog dialog = new javax.swing.JDialog();
+        // Configurar el JDialog
+        dialog.setUndecorated(false); // Sin bordes
+        dialog.setModal(true); // No bloquea la ventana principal
+        dialog.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        dialog.setLocationRelativeTo(null); // Centrar en la pantalla
+
+        // Crear el panel de cliente y agregarlo al diálogo
+        ClientePanel pedPanel = new ClientePanel();
+
+        pedPanel.setSize(dialog.getSize());
+        dialog.add(pedPanel);
+
+        // Hacer visible el diálogo
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnNuevoClienteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEnviarCajero;
+    private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnPedidosEnviados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

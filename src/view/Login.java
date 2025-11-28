@@ -5,6 +5,7 @@
 package view;
 
 import entity.Usuario;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import service.EmpleadoService;
@@ -68,7 +69,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtUser = new javax.swing.JTextField();
         txtPassword = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,10 +77,22 @@ public class Login extends javax.swing.JFrame {
 
         jLabel2.setText("PASSWORD: ");
 
-        jButton1.setText("INICAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        txtUser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUserKeyPressed(evt);
+            }
+        });
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+
+        btnIngresar.setText("INICAR");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
 
@@ -94,7 +107,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(btnIngresar)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -112,20 +125,32 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(94, 94, 94)
-                .addComponent(jButton1)
+                .addComponent(btnIngresar)
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
         String user = txtUser.getText();
         String pass = txtPassword.getText();
 
         login(user, pass);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserKeyPressed
+      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtPassword.requestFocus();
+        }
+    }//GEN-LAST:event_txtUserKeyPressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnIngresar.doClick();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -153,7 +178,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtPassword;

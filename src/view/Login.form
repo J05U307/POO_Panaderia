@@ -31,7 +31,7 @@
               </Group>
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnIngresar" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="txtPassword" min="-2" pref="144" max="-2" attributes="0"/>
                       <Component id="txtUser" min="-2" pref="144" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
                   <Component id="txtPassword" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnIngresar" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="134" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -73,15 +73,21 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtUser">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUserKeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPassword">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPasswordKeyPressed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnIngresar">
       <Properties>
         <Property name="text" type="java.lang.String" value="INICAR"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIngresarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

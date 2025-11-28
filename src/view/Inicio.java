@@ -4,6 +4,7 @@
  */
 package view;
 
+import entity.Rol;
 import entity.Usuario;
 import java.awt.BorderLayout;
 import java.util.HashMap;
@@ -30,6 +31,40 @@ public class Inicio extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         mostrarInicio();
         cargarInformacionUsuario();
+        //permisos();
+    }
+
+    private void permisos() {
+        String rol = usuarioLogueado.getRol().getNombre();
+
+        jMenu6.setVisible(false);  // Generar Venta
+        jMenu9.setVisible(false);  // Cobrar Venta
+        jMenu10.setVisible(false); // Gestionar
+        jMenu8.setVisible(false);  // Reportes
+
+        switch (rol) {
+            case "Vendedor":
+                jMenu6.setVisible(true);
+                break;
+
+            case "Cajero":
+                jMenu9.setVisible(true);
+                break;
+
+            case "Administrador":
+                jMenu6.setVisible(true);
+                jMenu9.setVisible(true);
+                jMenu10.setVisible(true);
+                jMenu8.setVisible(true);
+                break;
+
+            default:
+                JOptionPane.showMessageDialog(this,
+                        "Rol desconocido, comunicarse con administrador.",
+                        "Error de permisos",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 
     private void mostrarInicio() {
@@ -61,16 +96,16 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     private void mostrarGenerarVenta() {
-        
+
         CobrarVentaPanel prod = (CobrarVentaPanel) pantallas.computeIfAbsent("cobrarVenta", k -> new CobrarVentaPanel());
-        mostrarPantalla("generarVenta", () -> new GenerarVentaPanel(usuarioLogueado,prod));
+        mostrarPantalla("generarVenta", () -> new GenerarVentaPanel(usuarioLogueado, prod));
         //mostrarPantalla("generarVenta", () -> new GenerarVentaPanel(usuarioLogueado));
     }
 
     private void mostrarCobrarVenta() {
         mostrarPantalla("cobrarVenta", CobrarVentaPanel::new);
     }
-    
+
     private void mostraReporte() {
         mostrarPantalla("reportePenel", ReportePanel::new);
     }
