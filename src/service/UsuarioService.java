@@ -50,5 +50,10 @@ public class UsuarioService {
     public void eliminar(int id) {
         repo.delete(id);
     }
+    
+    // bucar:
+    public Usuario buscar(int id){
+        return repo.findById(id);
+    }
 
 }

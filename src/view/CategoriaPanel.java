@@ -247,6 +247,10 @@ public class CategoriaPanel extends javax.swing.JPanel {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         editar();
+
+        if (productoPanel != null) {
+            productoPanel.cargarComboCategoria();
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void tablaCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCategoriaMouseClicked
@@ -260,6 +264,9 @@ public class CategoriaPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         eliminar();
+        if (productoPanel != null) {
+            productoPanel.cargarComboCategoria();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

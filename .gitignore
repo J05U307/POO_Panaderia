@@ -1,0 +1,15 @@
+# Ignorar archivos generados
+build/
+dist/
+
+# Ignorar directorios de datos
+data/*.dat
+data/*.json
+data/*.txt
+
+# Ignorar archivos temporales
+*.log
+*.tmp
+
+# Ignorar binarios
+*.class

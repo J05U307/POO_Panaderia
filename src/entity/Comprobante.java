@@ -4,27 +4,32 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author josue
  */
-public class Comprobante {
+public class Comprobante implements Serializable{
 
     private int id;
     private Pedido pedido;
     private LocalDateTime fecha;
     private TipoPago pago;
+    private String serie;
+    private int numero;
 
     public Comprobante() {
     }
 
-    public Comprobante(int id, Pedido pedido, LocalDateTime fecha, TipoPago pago) {
+    public Comprobante(int id, Pedido pedido, LocalDateTime fecha, TipoPago pago, String serie, int numero) {
         this.id = id;
         this.pedido = pedido;
         this.fecha = fecha;
         this.pago = pago;
+        this.serie = serie;
+        this.numero = numero;
     }
 
     public int getId() {
@@ -57,6 +62,22 @@ public class Comprobante {
 
     public void setPago(TipoPago pago) {
         this.pago = pago;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
 }

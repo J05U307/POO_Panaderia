@@ -17,10 +17,12 @@ public class Boleta extends Comprobante {
     public Boleta() {
     }
 
-    public Boleta(String dni, int id, Pedido pedido, LocalDateTime fecha, TipoPago pago) {
-        super(id, pedido, fecha, pago);
+    public Boleta(String dni, int id, Pedido pedido, LocalDateTime fecha, TipoPago pago, String serie, int numero) {
+        super(id, pedido, fecha, pago, serie, numero);
         this.dni = dni;
     }
+
+   
 
     public String getDni() {
         return dni;

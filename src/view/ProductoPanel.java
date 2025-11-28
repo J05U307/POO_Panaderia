@@ -118,7 +118,6 @@ public class ProductoPanel extends javax.swing.JPanel {
         // Obtener la categoría seleccionada
         Categoria categoria = serviceCategoria.listar().get(categoriaIndex - 1);
 
-        // -1 porque el primer item es "Seleccione categoría"
         service.agregar(nombre, precio, stock, categoria);
 
         listar();

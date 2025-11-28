@@ -7,6 +7,7 @@ package repository;
 import entity.Categoria;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SerializadorUtil;
 
 /**
  *
@@ -14,14 +15,14 @@ import java.util.List;
  */
 public class CategoriaRepository {
 
+    private static final String FILE_PATH = "data/categorias.dat";
     private static List<Categoria> categorias = new ArrayList<>();
 
-    static {
-        categorias.add(new Categoria(1, "Bebidas"));
-        categorias.add(new Categoria(2, "Snacks"));
-        categorias.add(new Categoria(3, "Lácteos"));
+
+    public CategoriaRepository() {
+
+        categorias = SerializadorUtil.cargarLista(FILE_PATH);
     }
-    
 
     //Listar
     public List<Categoria> findAll() {
@@ -31,6 +32,7 @@ public class CategoriaRepository {
     //Agregar 
     public void save(Categoria categoria) {
         categorias.add(categoria);
+        SerializadorUtil.guardarLista(FILE_PATH, categorias);
     }
 
     //Editar
@@ -38,6 +40,7 @@ public class CategoriaRepository {
         for (int i = 0; i < categorias.size(); i++) {
             if (categorias.get(i).getId() == categoria.getId()) {
                 categorias.set(i, categoria);
+                SerializadorUtil.guardarLista(FILE_PATH, categorias);
                 return;
             }
         }
@@ -46,6 +49,7 @@ public class CategoriaRepository {
     // Elimianr
     public void delete(int id) {
         categorias.removeIf(c -> c.getId() == id);
+        SerializadorUtil.guardarLista(FILE_PATH, categorias);
     }
 
     // Busacar
@@ -57,4 +61,5 @@ public class CategoriaRepository {
         }
         return null;
     }
+
 }

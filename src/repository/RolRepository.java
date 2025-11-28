@@ -7,6 +7,7 @@ package repository;
 import entity.Rol;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SerializadorUtil;
 
 /**
  *
@@ -14,7 +15,12 @@ import java.util.List;
  */
 public class RolRepository {
 
+    private static final String FILE_PATH = "data/roles.dat";
     private static List<Rol> roles = new ArrayList<>();
+
+    public RolRepository() {
+        roles = SerializadorUtil.cargarLista(FILE_PATH);
+    }
 
     public List<Rol> findAll() {
         return roles;
@@ -22,12 +28,14 @@ public class RolRepository {
 
     public void save(Rol rol) {
         roles.add(rol);
+        SerializadorUtil.guardarLista(FILE_PATH, roles);
     }
 
     public void update(Rol rol) {
         for (int i = 0; i < roles.size(); i++) {
             if (roles.get(i).getId() == rol.getId()) {
                 roles.set(i, rol);
+                SerializadorUtil.guardarLista(FILE_PATH, roles);
                 return;
             }
         }
@@ -35,6 +43,7 @@ public class RolRepository {
 
     public void delete(int id) {
         roles.removeIf(c -> c.getId() == id);
+        SerializadorUtil.guardarLista(FILE_PATH, roles);
     }
 
     public Rol findById(int id) {

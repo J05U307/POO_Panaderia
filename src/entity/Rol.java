@@ -4,11 +4,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author josue
  */
-public class Rol {
+public class Rol implements Serializable {
 
     private int id;
     private String nombre;

@@ -7,6 +7,7 @@ package repository;
 import entity.Cliente;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SerializadorUtil;
 
 /**
  *
@@ -14,19 +15,14 @@ import java.util.List;
  */
 public class ClienteRepository {
 
+    private static final String FILE_PATH = "data/clientes.dat";
     private static List<Cliente> clientes = new ArrayList<>();
 
-    static {
-        clientes.add(new Cliente(1, "Carlos", "Ramírez", "72154896"));
-        clientes.add(new Cliente(2, "Camila", "Gonzales", "34679825"));
-        clientes.add(new Cliente(3, "José", "Gutiérrez", "73589412"));
-        clientes.add(new Cliente(4, "Ana", "Torres", "70894521"));
-        clientes.add(new Cliente(5, "Luis", "Fernández", "75632148"));
-        clientes.add(new Cliente(6, "María", "López", "74851236"));
-
+    // Listar 
+    public ClienteRepository() {
+        clientes = SerializadorUtil.cargarLista(FILE_PATH);
     }
 
-    // Listar 
     public List<Cliente> findAll() {
         return clientes;
     }
@@ -34,6 +30,7 @@ public class ClienteRepository {
     // Agreagar
     public void save(Cliente cliente) {
         clientes.add(cliente);
+        SerializadorUtil.guardarLista(FILE_PATH, clientes);
     }
 
     // Editar
@@ -41,6 +38,7 @@ public class ClienteRepository {
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes.get(i).getId() == cliente.getId()) {
                 clientes.set(i, cliente);
+                SerializadorUtil.guardarLista(FILE_PATH, clientes);
                 return;
             }
         }
@@ -49,6 +47,7 @@ public class ClienteRepository {
     // eliminar
     public void delete(int id) {
         clientes.removeIf(c -> c.getId() == id);
+        SerializadorUtil.guardarLista(FILE_PATH, clientes);
     }
 
     // BUSCAR
@@ -59,6 +58,22 @@ public class ClienteRepository {
             }
         }
         return null;
+    }
+
+    public List<Cliente> findByNombreOrDniContains(String filtro) {
+        List<Cliente> resultado = new ArrayList<>();
+        String texto = filtro.toLowerCase();
+
+        for (Cliente c : clientes) {
+            if (c.getNombre().toLowerCase().contains(texto)
+                    || c.getApellido().toLowerCase().contains(texto)
+                    || c.getDni().toLowerCase().contains(texto)) {
+
+                resultado.add(c);
+            }
+        }
+
+        return resultado;
     }
 
 }

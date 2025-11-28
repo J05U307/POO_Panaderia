@@ -6,6 +6,7 @@ package service;
 
 import entity.Categoria;
 import entity.Producto;
+import java.util.ArrayList;
 import java.util.List;
 import repository.ProductoRepository;
 
@@ -46,8 +47,29 @@ public class ProductoService {
         }
     }
 
+    public Producto buscarPorId(int id) {
+        return repo.findById(id);
+    }
+
     //Elimar
     public void eliminar(int id) {
         repo.delete(id);
     }
+
+    // buiscar en tiempo real
+    public List<Producto> buscarPorNombre(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return new ArrayList<>(); // retorna vacío para limpiar tabla
+        }
+        return repo.findByNombreContains(filtro);
+    }
+
+    public void actualizarStock(int id, int cantidadVendida) {
+        Producto pro = repo.findById(id);
+        if (pro != null) {
+            pro.setStock(pro.getStock() - cantidadVendida);
+            repo.update(pro);
+        }
+    }
+
 }

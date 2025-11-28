@@ -7,6 +7,7 @@ package repository;
 import entity.Empleado;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SerializadorUtil;
 
 /**
  *
@@ -14,7 +15,13 @@ import java.util.List;
  */
 public class EmpleadoRepositoy {
 
+    private static final String FILE_PATH = "data/empleados.dat";
     private static List<Empleado> empleados = new ArrayList<>();
+
+    public EmpleadoRepositoy() {
+
+        empleados = SerializadorUtil.cargarLista(FILE_PATH);
+    }
 
     //listar
     public List<Empleado> findAll() {
@@ -24,6 +31,7 @@ public class EmpleadoRepositoy {
     //agregar
     public void save(Empleado empleado) {
         empleados.add(empleado);
+        SerializadorUtil.guardarLista(FILE_PATH, empleados);
     }
 
     // editar
@@ -31,6 +39,8 @@ public class EmpleadoRepositoy {
         for (int i = 0; i < empleados.size(); i++) {
             if (empleados.get(i).getId() == empleado.getId()) {
                 empleados.set(i, empleado);
+                SerializadorUtil.guardarLista(FILE_PATH, empleados);
+                return;
             }
         }
     }
@@ -38,6 +48,7 @@ public class EmpleadoRepositoy {
     // eliminar
     public void delete(int id) {
         empleados.removeIf(c -> c.getId() == id);
+        SerializadorUtil.guardarLista(FILE_PATH, empleados);
     }
 
     //Buscar
@@ -48,5 +59,13 @@ public class EmpleadoRepositoy {
             }
         }
         return null;
+    }
+
+    // ULTIMO  ID: 
+    public Empleado findLast() {
+        if (empleados.isEmpty()) {
+            return null;
+        }
+        return empleados.get(empleados.size() - 1);
     }
 }

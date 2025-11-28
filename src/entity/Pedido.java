@@ -4,13 +4,14 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author josue
  */
-public class Pedido {
+public class Pedido implements Serializable{
 
     private int id;
     private LocalDateTime fecha;

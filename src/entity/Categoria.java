@@ -4,11 +4,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author josue
  */
-public class Categoria {
+public class Categoria implements Serializable {
 
     private int id;
     private String nombre;

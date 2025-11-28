@@ -38,22 +38,17 @@ public class Login extends javax.swing.JFrame {
         serviceRol.agregar("Cajero");
         serviceRol.agregar("Administrador");
 
-        serviceEmpleado.agregar("Carlos", "Ramirez", "75481236", "987654321", 20, LocalDate.of(2023, 5, 10), 1800);
-        serviceUsuario.agregar("carlos", "123", serviceEmpleado.listar().get(0), serviceRol.listar().get(0));
+        serviceEmpleado.agregar("Administrador", "Administrador", "00000000", "00000000", 0, LocalDate.of(2000, 01, 01), 0);
+        serviceUsuario.agregar("admin", "admin", serviceEmpleado.listar().get(0), serviceRol.listar().get(0));
 
-        serviceEmpleado.agregar("Maria", "Lopez", "70894512", "912345678", 20, LocalDate.of(2022, 11, 3), 2200);
-        serviceUsuario.agregar("maria", "123", serviceEmpleado.listar().get(1), serviceRol.listar().get(1));
-
-        serviceEmpleado.agregar("Jose", "Fernandez", "72145896", "900112233", 28, LocalDate.of(2024, 1, 20), 3000);
-        serviceUsuario.agregar("camila", "333", serviceEmpleado.listar().get(2), serviceRol.listar().get(2));
     }
-
+    
     private void login(String user, String pass) {
 
         for (Usuario u : serviceUsuario.listar()) {
             if (u.getUser().equals(user) && u.getPassword().equals(pass)) {
 
-                Inicio ini = new Inicio();
+                Inicio ini = new Inicio(u);
                 ini.setVisible(true);
                 this.dispose();
 

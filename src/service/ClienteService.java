@@ -5,6 +5,7 @@
 package service;
 
 import entity.Cliente;
+import java.util.ArrayList;
 import java.util.List;
 import repository.ClienteRepository;
 
@@ -45,6 +46,18 @@ public class ClienteService {
     // ELIMINAR
     public void eliminar(int id) {
         repo.delete(id);
+    }
+    
+    //BUCAR
+    public Cliente buscar(int id) {
+        return repo.findById(id);
+    }
+
+    public List<Cliente> buscarPorNombreODni(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return new ArrayList<>(); 
+        }
+        return repo.findByNombreOrDniContains(filtro);
     }
 
 }

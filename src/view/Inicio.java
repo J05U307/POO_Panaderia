@@ -4,6 +4,7 @@
  */
 package view;
 
+import entity.Usuario;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,15 +19,17 @@ import javax.swing.JPanel;
 public class Inicio extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inicio.class.getName());
+    private Usuario usuarioLogueado;
 
     // Map para cambbiar pantallas     
     private final Map<String, JPanel> pantallas = new HashMap<>();
 
-    // PAGINAS: 
-    public Inicio() {
+    public Inicio(Usuario usuarioLogueado) {
+        this.usuarioLogueado = usuarioLogueado;
         initComponents();
         this.setLocationRelativeTo(null);
         mostrarInicio();
+        cargarInformacionUsuario();
     }
 
     private void mostrarInicio() {
@@ -51,6 +54,27 @@ public class Inicio extends javax.swing.JFrame {
         mostrarPantalla("empleado", EmpleadoPanel::new);
     }
 
+    private void mostrarTipoPago() {
+        CobrarVentaPanel ven = (CobrarVentaPanel) pantallas.computeIfAbsent("cobrarVenta", k -> new CobrarVentaPanel());
+        mostrarPantalla("tipoPago", () -> new TIpoPagoPanel(ven));
+
+    }
+
+    private void mostrarGenerarVenta() {
+        
+        CobrarVentaPanel prod = (CobrarVentaPanel) pantallas.computeIfAbsent("cobrarVenta", k -> new CobrarVentaPanel());
+        mostrarPantalla("generarVenta", () -> new GenerarVentaPanel(usuarioLogueado,prod));
+        //mostrarPantalla("generarVenta", () -> new GenerarVentaPanel(usuarioLogueado));
+    }
+
+    private void mostrarCobrarVenta() {
+        mostrarPantalla("cobrarVenta", CobrarVentaPanel::new);
+    }
+    
+    private void mostraReporte() {
+        mostrarPantalla("reportePenel", ReportePanel::new);
+    }
+
     private void mostrarPantalla(String nombre, Supplier<JPanel> constructor) {
         try {
             // computeIfAbsent crea y pone en el map sólo si no existe
@@ -70,6 +94,13 @@ public class Inicio extends javax.swing.JFrame {
         Panel_carga.add(panel, BorderLayout.CENTER);
         Panel_carga.revalidate();
         Panel_carga.repaint();
+    }
+
+    private void cargarInformacionUsuario() {
+        if (usuarioLogueado != null) {
+            labelUsuario.setText(usuarioLogueado.getEmpleado().getNombre());
+            labelRol.setText(usuarioLogueado.getRol().getNombre());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -94,6 +125,11 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jButton1 = new javax.swing.JButton();
         Panel_carga = new javax.swing.JPanel();
+        panelInformacion = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        labelUsuario = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        labelRol = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -145,17 +181,54 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Panel_carga.setBackground(new java.awt.Color(255, 255, 255));
+        Panel_carga.setBackground(new java.awt.Color(255, 255, 204));
 
         javax.swing.GroupLayout Panel_cargaLayout = new javax.swing.GroupLayout(Panel_carga);
         Panel_carga.setLayout(Panel_cargaLayout);
         Panel_cargaLayout.setHorizontalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1108, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         Panel_cargaLayout.setVerticalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 689, Short.MAX_VALUE)
+            .addGap(0, 635, Short.MAX_VALUE)
+        );
+
+        panelInformacion.setBackground(new java.awt.Color(153, 255, 204));
+
+        jLabel1.setText("Usuario:");
+
+        labelUsuario.setText("nombreUser");
+
+        jLabel2.setText("Rol:");
+
+        labelRol.setText("nombreRol");
+
+        javax.swing.GroupLayout panelInformacionLayout = new javax.swing.GroupLayout(panelInformacion);
+        panelInformacion.setLayout(panelInformacionLayout);
+        panelInformacionLayout.setHorizontalGroup(
+            panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInformacionLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(labelUsuario)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel2)
+                .addGap(26, 26, 26)
+                .addComponent(labelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(650, Short.MAX_VALUE))
+        );
+        panelInformacionLayout.setVerticalGroup(
+            panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInformacionLayout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(labelUsuario)
+                    .addComponent(jLabel2)
+                    .addComponent(labelRol))
+                .addGap(17, 17, 17))
         );
 
         jMenu5.setText("Inicio");
@@ -172,9 +245,28 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Generar Venta");
+        jMenu6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu6MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu6);
 
         jMenu9.setText("Cobrar Venta");
+        jMenu9.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+                jMenu9MenuKeyPressed(evt);
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        jMenu9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu9MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu9);
 
         jMenu11.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -219,11 +311,21 @@ public class Inicio extends javax.swing.JFrame {
         jMenu10.add(jMenuItem9);
 
         jMenuItem10.setText("Pago");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu10.add(jMenuItem10);
 
         jMenuBar1.add(jMenu10);
 
         jMenu8.setText("Reportes");
+        jMenu8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu8MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu8);
 
         jMenu7.setText("Salir");
@@ -245,13 +347,15 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelInformacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(Panel_carga, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Panel_carga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(panelInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Panel_carga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -315,6 +419,26 @@ public class Inicio extends javax.swing.JFrame {
         // Si selecciona "Cancelar" (respuesta == 2), no se hace nada
     }//GEN-LAST:event_jMenu7MouseClicked
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        mostrarTipoPago();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
+        mostrarGenerarVenta();
+    }//GEN-LAST:event_jMenu6MouseClicked
+
+    private void jMenu9MenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_jMenu9MenuKeyPressed
+
+    }//GEN-LAST:event_jMenu9MenuKeyPressed
+
+    private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
+        mostrarCobrarVenta();
+    }//GEN-LAST:event_jMenu9MouseClicked
+
+    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
+        mostraReporte();
+    }//GEN-LAST:event_jMenu8MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -337,13 +461,15 @@ public class Inicio extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Inicio().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new Inicio().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_carga;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
@@ -372,5 +498,8 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JLabel labelRol;
+    private javax.swing.JLabel labelUsuario;
+    private javax.swing.JPanel panelInformacion;
     // End of variables declaration//GEN-END:variables
 }

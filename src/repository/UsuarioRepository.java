@@ -4,10 +4,10 @@
  */
 package repository;
 
-
 import entity.Usuario;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SerializadorUtil;
 
 /**
  *
@@ -15,16 +15,23 @@ import java.util.List;
  */
 public class UsuarioRepository {
 
+    private static final String FILE_PATH = "data/usuarios.dat";
     private static List<Usuario> usuarios = new ArrayList<>();
 
-    // listar
+    public UsuarioRepository() {
+        usuarios = SerializadorUtil.cargarLista(FILE_PATH);
+    }
+
+// listar
     public List<Usuario> findAll() {
         return usuarios;
+
     }
 
     // agrega
     public void save(Usuario usuario) {
         usuarios.add(usuario);
+        SerializadorUtil.guardarLista(FILE_PATH, usuarios);
     }
 
     // editar
@@ -32,6 +39,7 @@ public class UsuarioRepository {
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getId() == usuario.getId()) {
                 usuarios.set(i, usuario);
+                SerializadorUtil.guardarLista(FILE_PATH, usuarios);
                 return;
             }
         }
@@ -40,6 +48,7 @@ public class UsuarioRepository {
     // eliminari()
     public void delete(int id) {
         usuarios.removeIf(c -> c.getId() == id);
+        SerializadorUtil.guardarLista(FILE_PATH, usuarios);
     }
 
     // Busacar
