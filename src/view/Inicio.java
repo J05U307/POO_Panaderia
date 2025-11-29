@@ -115,10 +115,6 @@ public class Inicio extends javax.swing.JFrame {
         mostrarPantalla("reporteMensual", ReporteMensualPanel::new);
     }
 
-    private void mostraReporte() {
-        mostrarPantalla("reportePenel", ReportePanel::new);
-    }
-
     private void mostrarPantalla(String nombre, Supplier<JPanel> constructor) {
         try {
             // computeIfAbsent crea y pone en el map sólo si no existe

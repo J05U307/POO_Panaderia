@@ -2,10 +2,11 @@
 build/
 dist/
 
-# Ignorar directorios de datos
-data/*.dat
-data/*.json
-data/*.txt
+# Ignorar todo el contenido de data
+data/*
+
+# Permitir que exista la carpeta data
+!data/.gitkeep
 
 # Ignorar archivos temporales
 *.log
