@@ -6,41 +6,65 @@ package view;
 
 import entity.DetalleVenta;
 import entity.Pedido;
-import entity.Usuario;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import service.DetalleVentaService;
 import service.PedidoService;
+import utils.GenerarComprobante;
 import utils.PedidoEstadoRenderer;
 
 /**
  *
  * @author josue
  */
-public class PedidosEnviadosPanel extends javax.swing.JPanel {
+public class HistorialPedidosPanel extends javax.swing.JPanel {
 
-    private Usuario usuarioLogueado;
     private PedidoService pedidoService = new PedidoService();
+    private GenerarComprobante generardorComprobante = new GenerarComprobante();
     private DetalleVentaService detalleVentaService = new DetalleVentaService();
 
-    public PedidosEnviadosPanel(Usuario usuarioLogueado) {
+    public HistorialPedidosPanel() {
         initComponents();
-        this.usuarioLogueado = usuarioLogueado;
-        configurarTablaPedidos();
         configurarTablaDetallePedido();
-        /// DIA ACTUAL
+        configurarTablaPedidos();
         dateFecha.setDate(java.sql.Date.valueOf(LocalDate.now()));
         filtrarPedidosPorFecha();
-        informacion();
-
+        mostarInformacion();
         listenerjdata();
+    }
+
+    private void imprimirComprobante() {
+        int fila = tablaPedidos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un pedido ", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener ID del pedido (columna 0)
+        int idPedido = Integer.parseInt(tablaPedidos.getValueAt(fila, 0).toString());
+
+        String ruta = generardorComprobante.generarComprobantePDF(idPedido);
+
+        // Validar errores
+        if (ruta.startsWith("ERROR")) {
+            JOptionPane.showMessageDialog(this, ruta, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Abrir el PDF generado automáticamente
+        try {
+            java.awt.Desktop.getDesktop().open(new File(ruta));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "PDF generado: " + ruta, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        }
 
     }
 
-    private void informacion() {
-
+    private void mostarInformacion() {
         int contadorProceso = 0;
         int contadorPagado = 0;
         int contatadorAnulado = 0;
@@ -58,18 +82,21 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
                 contadorProceso++;
             } else if (estado.equalsIgnoreCase("PAGADO")) {
                 contadorPagado++;
-            } else if (estado.equalsIgnoreCase("ANULADO")){
+                sumaTotal += total;
+            } else if (estado.equalsIgnoreCase("ANULADO")) {
                 contatadorAnulado++;
             }
 
-            // sumaTotal += total;
         }
 
         // Actualizar labels
+        labeltotalPedidos.setText(String.valueOf(contadorProceso + contadorPagado + contatadorAnulado));
         labelProceso.setText(String.valueOf(contadorProceso));
-        labelPagado.setText(String.valueOf(contadorPagado));
+        labelPagados.setText(String.valueOf(contadorPagado));
         labelTotal.setText(String.valueOf(contadorPagado + contadorProceso));
-        labelAnulado.setText(String.valueOf(contatadorAnulado));
+        labelAnulados.setText(String.valueOf(contatadorAnulado));
+        labelTotal.setText(String.format("S/ %.2f", sumaTotal));
+
     }
 
     //Listener jdatachjoser
@@ -77,7 +104,7 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         dateFecha.addPropertyChangeListener(evt -> {
             if ("date".equals(evt.getPropertyName())) {
                 filtrarPedidosPorFecha();
-                informacion();
+                mostarInformacion();
             }
         });
     }
@@ -89,7 +116,6 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         }
 
         int idPedido = (int) tablaPedidos.getValueAt(fila, 0);
-
         DefaultTableModel modelo = (DefaultTableModel) tablaDetallePedido.getModel();
         modelo.setRowCount(0);
 
@@ -118,7 +144,7 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
-        for (Pedido pedido : pedidoService.listarPorUsuario(usuarioLogueado)) {
+        for (Pedido pedido : pedidoService.listar()) {
 
             LocalDate fechaPedido = pedido.getFecha().toLocalDate();
 
@@ -201,26 +227,35 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         tablaDetallePedido.getColumnModel().getColumn(4).setPreferredWidth(80);
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaDetallePedido = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         dateFecha = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaDetallePedido = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        labelTotal = new javax.swing.JLabel();
-        labelProceso = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        labelPagado = new javax.swing.JLabel();
-        labelAnulado = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        labelTotal = new javax.swing.JLabel();
+        labelProceso = new javax.swing.JLabel();
+        labelAnulados = new javax.swing.JLabel();
+        labelPagados = new javax.swing.JLabel();
+        labeltotalPedidos = new javax.swing.JLabel();
 
         tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -240,6 +275,10 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tablaPedidos);
 
+        jLabel1.setText("HISTORIAL DE TODOS LOS PEDIDOS");
+
+        jLabel2.setText("Fecha");
+
         tablaDetallePedido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -253,69 +292,85 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tablaDetallePedido);
 
-        jLabel2.setText("Fecha");
+        jButton1.setText("Imprimir Comprobante");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jLabel6.setText("Pedidos enviados por el usaurio");
+        jLabel3.setText("Totol Pedidos");
 
-        jLabel1.setText("Pedidos Enviados");
+        jLabel4.setText("Pedidos Pagados");
+
+        jLabel5.setText("Pedidos Anulados");
+
+        jLabel6.setText("Pedidos En proceso");
+
+        jLabel7.setText("GANANCIA");
+
+        jLabel8.setText("Total");
 
         labelTotal.setText("total");
 
         labelProceso.setText("proceso");
 
-        jLabel3.setText("Pedidos En Proseso");
+        labelAnulados.setText("anulados");
 
-        jLabel4.setText("Pedidos Pagados");
+        labelPagados.setText("pagados");
 
-        labelPagado.setText("pagado");
-
-        labelAnulado.setText("anulado");
-
-        jLabel5.setText("Pedidos Anulados");
+        labeltotalPedidos.setText("totalPedidos");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(30, 30, 30)
-                        .addComponent(labelTotal))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel8)
+                        .addGap(90, 90, 90)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelPagado)
-                            .addComponent(labelProceso)
-                            .addComponent(labelAnulado))))
-                .addContainerGap(93, Short.MAX_VALUE))
+                            .addComponent(labeltotalPedidos)
+                            .addComponent(labelTotal)
+                            .addComponent(labelPagados)
+                            .addComponent(labelAnulados)
+                            .addComponent(labelProceso))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(labelTotal))
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(labelProceso))
+                    .addComponent(labeltotalPedidos))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(labelPagado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(labelPagados))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(labelAnulado))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(labelAnulados))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(labelProceso))
+                .addGap(37, 37, 37)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(labelTotal))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -323,46 +378,45 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel6)))
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(42, 42, 42))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addGap(53, 53, 53)
+                        .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addGap(30, 30, 30)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(69, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -370,22 +424,30 @@ public class PedidosEnviadosPanel extends javax.swing.JPanel {
         listarDetallePedido();
     }//GEN-LAST:event_tablaPedidosMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        imprimirComprobante();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateFecha;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel labelAnulado;
-    private javax.swing.JLabel labelPagado;
+    private javax.swing.JLabel labelAnulados;
+    private javax.swing.JLabel labelPagados;
     private javax.swing.JLabel labelProceso;
     private javax.swing.JLabel labelTotal;
+    private javax.swing.JLabel labeltotalPedidos;
     private javax.swing.JTable tablaDetallePedido;
     private javax.swing.JTable tablaPedidos;
     // End of variables declaration//GEN-END:variables

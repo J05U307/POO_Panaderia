@@ -5,6 +5,7 @@
 package repository;
 
 import entity.Comprobante;
+import entity.Pedido;
 import java.util.ArrayList;
 import java.util.List;
 import utils.SerializadorUtil;
@@ -58,6 +59,15 @@ public class ComprobanteRepository {
         }
 
         return ultimo;
+    }
+
+    public Comprobante findByPedido(Pedido pedido) {
+        for (Comprobante c : comporobantes) {
+            if (c.getPedido().getId() == pedido.getId()) {
+                return c;
+            }
+        }
+        return null;
     }
 
 }

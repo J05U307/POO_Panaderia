@@ -32,9 +32,14 @@ public class PedidoEstadoRenderer extends DefaultTableCellRenderer {
         String estado = table.getValueAt(row, 6).toString();
 
         if (estado.equalsIgnoreCase("PROCESO")) {
-            c.setBackground(new Color(255, 204, 204)); // rojo suave
+            // Amarillo suave
+            c.setBackground(new Color(255, 255, 153));
         } else if (estado.equalsIgnoreCase("PAGADO")) {
-            c.setBackground(new Color(204, 255, 204)); // verde suave
+            // Verde suave
+            c.setBackground(new Color(204, 255, 204));
+        } else if (estado.equalsIgnoreCase("ANULADO")) {
+            // Rojo suave
+            c.setBackground(new Color(255, 153, 153));
         } else {
             c.setBackground(Color.WHITE);
         }

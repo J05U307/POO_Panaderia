@@ -10,13 +10,18 @@ import entity.DetalleVenta;
 import entity.Factura;
 import entity.Pedido;
 import entity.TipoPago;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import service.ComprobanteService;
 import service.DetalleVentaService;
 import service.PedidoService;
+import service.ProductoService;
 import service.TipoPagoService;
+import utils.GenerarComprobante;
 import utils.PedidoEstadoRenderer;
 
 /**
@@ -27,17 +32,68 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
 
     private TipoPagoService tipoPagoService = new TipoPagoService();
     private PedidoService pedidoService = new PedidoService();
+    private ProductoService productoService = new ProductoService();
     private ComprobanteService comprobanteService = new ComprobanteService();
     private DetalleVentaService detalleVentaService = new DetalleVentaService();
+    private GenerarComprobante generardorComprobante = new GenerarComprobante();
 
     public CobrarVentaPanel() {
         initComponents();
+        checboxImprimir.setSelected(true);
         configurarTablaPedidos();
         configurarTablaDetallePedido();
         cargarCompoTipoPago();
         cargarComboComprobante();
         listarPedidosEnProceso();
 
+    }
+
+    private void anularPedido() {
+        int fila = tablaPedidos.getSelectedRow();
+        if (fila == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un pedido.");
+            return;
+        }
+
+        int idPedido = (int) tablaPedidos.getValueAt(fila, 0);
+        Pedido pedido = pedidoService.buscar(idPedido);
+
+        if (pedido == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pudo cargar el pedido.");
+            return;
+        }
+
+        // CONFIRMACIÓN
+        int confirmar = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea ANULAR el pedido?",
+                "Confirmar",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmar != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        //cambiar estado del pedido
+        pedidoService.cambiarEstadoAnulado(idPedido);
+
+        // obtener todos los detalles del pedido
+        List<DetalleVenta> detalles = detalleVentaService.listarPorPedido(idPedido);
+
+        // 3. Devolver stock por cada producto
+        for (DetalleVenta det : detalles) {
+            int idProducto = det.getProducto().getId();
+            int cantidad = det.getCantidad();
+
+            productoService.devolverStockProducto(idProducto, cantidad);
+        }
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Pedido anulado correctamente.");
+
+        // 4. Limpiar e listar nuevamente
+        limpiar();
+        listarPedidosEnProceso();
     }
 
     private void crearComprobante() {
@@ -93,13 +149,34 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
             comprobanteService.crearFactura(pedido, tipoPago, ruc, razon);
 
             javax.swing.JOptionPane.showMessageDialog(this, "Factura generada correctamente");
+
         }
 
         // Actualizar estado del pedido
-        pedidoService.cambiarEstado(idPedido);
-
+        pedidoService.cambiarEstadoPagado(idPedido);
         limpiar();
         listarPedidosEnProceso();
+
+        //Imprimir
+        if (checboxImprimir.isSelected()) {
+            imprimirComprovante(idPedido);
+        } else {
+            return;
+        }
+
+    }
+
+    private void imprimirComprovante(int idPedido) {
+        String ruta = generardorComprobante.generarComprobantePDF(idPedido);
+        if (ruta.startsWith("ERROR")) {
+            JOptionPane.showMessageDialog(this, ruta, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            java.awt.Desktop.getDesktop().open(new File(ruta));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "PDF generado: " + ruta, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void limpiar() {
@@ -277,13 +354,15 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         comboTipoPago = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnPagar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         labelNombreCliente = new javax.swing.JLabel();
         labelTotal = new javax.swing.JLabel();
         comboComprobante = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         btnHistorial = new javax.swing.JButton();
+        tbnAnular = new javax.swing.JButton();
+        checboxImprimir = new javax.swing.JCheckBox();
 
         jLabel1.setText("Cola de pedidos");
 
@@ -344,10 +423,10 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
 
         comboTipoPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("PAGAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnPagar.setText("PAGAR PEDIDO");
+        btnPagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnPagarActionPerformed(evt);
             }
         });
 
@@ -372,6 +451,15 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                 btnHistorialActionPerformed(evt);
             }
         });
+
+        tbnAnular.setText("ANULAR PEDIDO");
+        tbnAnular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbnAnularActionPerformed(evt);
+            }
+        });
+
+        checboxImprimir.setText("Imprimir Comprobante");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -400,19 +488,22 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel8))
-                                .addGap(18, 18, 18)
+                                .addGap(67, 67, 67)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(labelTotal)
                                     .addComponent(labelNombreCliente)
                                     .addComponent(comboTipoPago, 0, 169, Short.MAX_VALUE)
-                                    .addComponent(comboComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(comboComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(checboxImprimir)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(146, 146, 146)
-                        .addComponent(jButton1)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGap(54, 54, 54)
+                        .addComponent(tbnAnular)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPagar)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,9 +539,13 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(comboComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)
-                        .addComponent(jButton1)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)
+                        .addComponent(checboxImprimir)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tbnAnular)
+                            .addComponent(btnPagar))))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -465,20 +560,41 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         listarPedidosEnProceso();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
         crearComprobante();
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_btnPagarActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog();
+        // Configurar el JDialog
+        dialog.setUndecorated(false); // Sin bordes
+        dialog.setModal(true); // No bloquea la ventana principal
+        dialog.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        dialog.setLocationRelativeTo(null); // Centrar en la pantalla
+
+        // Crear el panel de cliente y agregarlo al diálogo
+        HistorialPedidosPanel pedPanel = new HistorialPedidosPanel();
+
+        pedPanel.setSize(dialog.getSize());
+        dialog.add(pedPanel);
+
+        // Hacer visible el diálogo
+        dialog.setVisible(true);
     }//GEN-LAST:event_btnHistorialActionPerformed
+
+    private void tbnAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnAnularActionPerformed
+        anularPedido();
+    }//GEN-LAST:event_tbnAnularActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHistorial;
+    private javax.swing.JButton btnPagar;
+    private javax.swing.JCheckBox checboxImprimir;
     private javax.swing.JComboBox<String> comboComprobante;
     private javax.swing.JComboBox<String> comboTipoPago;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -494,5 +610,6 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
     private javax.swing.JLabel labelTotal;
     private javax.swing.JTable tablaDetallePedido;
     private javax.swing.JTable tablaPedidos;
+    private javax.swing.JButton tbnAnular;
     // End of variables declaration//GEN-END:variables
 }

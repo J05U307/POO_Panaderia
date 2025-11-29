@@ -72,4 +72,12 @@ public class ProductoService {
         }
     }
 
+    public void devolverStockProducto(int id, int cantidadDevuleta) {
+        Producto pro = repo.findById(id);
+        if (pro != null) {
+            pro.setStock(pro.getStock() + cantidadDevuleta);
+            repo.update(pro);
+        }
+    }
+
 }

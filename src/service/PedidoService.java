@@ -40,11 +40,20 @@ public class PedidoService {
         return true;
     }
 
-    public void cambiarEstado(int id) {
+    public void cambiarEstadoPagado(int id) {
         Pedido c = repo.findById(id);
 
         if (c != null) {
             c.setEstado("PAGADO");
+            repo.update(c);
+        }
+    }
+
+    public void cambiarEstadoAnulado(int id) {
+        Pedido c = repo.findById(id);
+
+        if (c != null) {
+            c.setEstado("ANULADO");
             repo.update(c);
         }
     }
@@ -96,6 +105,37 @@ public class PedidoService {
 
     public List<Pedido> listarPorUsuario(Usuario usuario) {
         return repo.findByUsuario(usuario);
+    }
+
+    // PARA EL REPORTE MENSUAL: DEVUELCE UNA LSITAR DE PEDIDOS DE ACUERDO A UNA FECHA.(PAGADO)
+    public List<Pedido> listarPagadosPorFecha(LocalDate fecha) {
+        List<Pedido> resultado = new ArrayList<>();
+
+        for (Pedido p : repo.findAll()) {
+            if (p.getEstado().equalsIgnoreCase("PAGADO")
+                    && p.getFecha().toLocalDate().equals(fecha)) {
+
+                resultado.add(p);
+            }
+        }
+
+        return resultado;
+    }
+
+    // nuemro de pedios pagados (Reporte)
+    public int contarPagadosPorFecha(LocalDate fecha) {
+        return listarPagadosPorFecha(fecha).size();
+    }
+
+    // totoal recaudado por dia (Reporte)
+    public double totalPagadoPorFecha(LocalDate fecha) {
+        double total = 0;
+
+        for (Pedido p : listarPagadosPorFecha(fecha)) {
+            total += p.getTotal();
+        }
+
+        return total;
     }
 
 }

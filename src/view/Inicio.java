@@ -28,10 +28,11 @@ public class Inicio extends javax.swing.JFrame {
     public Inicio(Usuario usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
         initComponents();
+        Panel_carga.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         mostrarInicio();
         cargarInformacionUsuario();
-        //permisos();
+        permisos();
     }
 
     private void permisos() {
@@ -95,6 +96,10 @@ public class Inicio extends javax.swing.JFrame {
 
     }
 
+    private void mostrarHistorialVenta() {
+        mostrarPantalla("historialVenta", HistorialPedidosPanel::new);
+    }
+
     private void mostrarGenerarVenta() {
 
         CobrarVentaPanel prod = (CobrarVentaPanel) pantallas.computeIfAbsent("cobrarVenta", k -> new CobrarVentaPanel());
@@ -104,6 +109,10 @@ public class Inicio extends javax.swing.JFrame {
 
     private void mostrarCobrarVenta() {
         mostrarPantalla("cobrarVenta", CobrarVentaPanel::new);
+    }
+
+    private void mostrarReporteMensual() {
+        mostrarPantalla("reporteMensual", ReporteMensualPanel::new);
     }
 
     private void mostraReporte() {
@@ -123,12 +132,19 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     private void cambiarPanel(JPanel panel) {
+        /*
         Panel_carga.removeAll();
         // Aseguramos que el Panel_carga tenga BorderLayout para que el panel ocupe todo
         Panel_carga.setLayout(new BorderLayout());
         Panel_carga.add(panel, BorderLayout.CENTER);
         Panel_carga.revalidate();
         Panel_carga.repaint();
+    
+         */
+        Panel_carga.removeAll();       // QUITA TODO LO ANTERIOR
+        Panel_carga.add(panel);        // AGREGA EL NUEVO PANEL
+        Panel_carga.revalidate();      // REORGANIZA
+        Panel_carga.repaint();         // REDIBUJA
     }
 
     private void cargarInformacionUsuario() {
@@ -169,7 +185,6 @@ public class Inicio extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
-        jMenu11 = new javax.swing.JMenu();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -177,6 +192,8 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
 
         jMenu1.setText("jMenu1");
@@ -216,7 +233,7 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Panel_carga.setBackground(new java.awt.Color(255, 255, 204));
+        Panel_carga.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout Panel_cargaLayout = new javax.swing.GroupLayout(Panel_carga);
         Panel_carga.setLayout(Panel_cargaLayout);
@@ -226,10 +243,10 @@ public class Inicio extends javax.swing.JFrame {
         );
         Panel_cargaLayout.setVerticalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 635, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        panelInformacion.setBackground(new java.awt.Color(153, 255, 204));
+        panelInformacion.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setText("Usuario:");
 
@@ -244,29 +261,37 @@ public class Inicio extends javax.swing.JFrame {
         panelInformacionLayout.setHorizontalGroup(
             panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInformacionLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1)
+                .addGap(16, 16, 16)
+                .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(labelUsuario)
-                .addGap(54, 54, 54)
-                .addComponent(jLabel2)
-                .addGap(26, 26, 26)
-                .addComponent(labelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(650, Short.MAX_VALUE))
+                .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelUsuario))
+                .addContainerGap(1091, Short.MAX_VALUE))
         );
         panelInformacionLayout.setVerticalGroup(
             panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInformacionLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+            .addGroup(panelInformacionLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(labelUsuario)
+                    .addComponent(labelUsuario))
+                .addGap(18, 18, 18)
+                .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(labelRol))
-                .addGap(17, 17, 17))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        jMenuBar1.setMaximumSize(new java.awt.Dimension(1050, 32768));
+        jMenuBar1.setMinimumSize(new java.awt.Dimension(1050, 50));
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(1050, 50));
+
         jMenu5.setText("Inicio");
+        jMenu5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu5.setPreferredSize(new java.awt.Dimension(150, 50));
         jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu5MouseClicked(evt);
@@ -280,6 +305,8 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Generar Venta");
+        jMenu6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu6.setPreferredSize(new java.awt.Dimension(150, 50));
         jMenu6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu6MouseClicked(evt);
@@ -288,6 +315,8 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu6);
 
         jMenu9.setText("Cobrar Venta");
+        jMenu9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu9.setPreferredSize(new java.awt.Dimension(150, 50));
         jMenu9.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 jMenu9MenuKeyPressed(evt);
@@ -304,14 +333,9 @@ public class Inicio extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu9);
 
-        jMenu11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu11MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu11);
-
         jMenu10.setText("Gestionar");
+        jMenu10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu10.setPreferredSize(new java.awt.Dimension(150, 50));
 
         jMenuItem3.setText("Producto");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -356,14 +380,35 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu10);
 
         jMenu8.setText("Reportes");
+        jMenu8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu8.setPreferredSize(new java.awt.Dimension(150, 50));
         jMenu8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu8MouseClicked(evt);
             }
         });
+
+        jMenuItem11.setText("Historial Ventas");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem11);
+
+        jMenuItem12.setText("Reporte Mensual");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem12);
+
         jMenuBar1.add(jMenu8);
 
         jMenu7.setText("Salir");
+        jMenu7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu7.setPreferredSize(new java.awt.Dimension(150, 50));
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu7MouseClicked(evt);
@@ -389,8 +434,9 @@ public class Inicio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_carga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Panel_carga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -404,25 +450,49 @@ public class Inicio extends javax.swing.JFrame {
         mostrarInicio();
     }//GEN-LAST:event_jMenu5MouseClicked
 
-    private void jMenu11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu11MouseClicked
-        mostrarCategoria();
-    }//GEN-LAST:event_jMenu11MouseClicked
+    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
+        mostrarGenerarVenta();
+    }//GEN-LAST:event_jMenu6MouseClicked
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        mostrarProducto();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
+        mostrarCobrarVenta();
+    }//GEN-LAST:event_jMenu9MouseClicked
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        mostrarCategoria();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jMenu9MenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_jMenu9MenuKeyPressed
+
+    }//GEN-LAST:event_jMenu9MenuKeyPressed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        mostrarTipoPago();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        mostrarEmpleado();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         mostrarCliente();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        mostrarEmpleado();
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        mostrarCategoria();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        mostrarProducto();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
+
+    }//GEN-LAST:event_jMenu8MouseClicked
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        mostrarReporteMensual();
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        mostrarHistorialVenta();
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu7ActionPerformed
 
@@ -434,14 +504,14 @@ public class Inicio extends javax.swing.JFrame {
 
         // Mostrar diálogo de confirmación con tres opciones
         int respuesta = JOptionPane.showOptionDialog(
-                null,
-                "¿Qué deseas hacer?",
-                "Confirmación",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                opciones[2] // Opción por defecto seleccionada (Cancelar)
+            null,
+            "¿Qué deseas hacer?",
+            "Confirmación",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[2] // Opción por defecto seleccionada (Cancelar)
         );
 
         // Verificar la respuesta del usuario
@@ -453,26 +523,6 @@ public class Inicio extends javax.swing.JFrame {
         }
         // Si selecciona "Cancelar" (respuesta == 2), no se hace nada
     }//GEN-LAST:event_jMenu7MouseClicked
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        mostrarTipoPago();
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
-    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-        mostrarGenerarVenta();
-    }//GEN-LAST:event_jMenu6MouseClicked
-
-    private void jMenu9MenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_jMenu9MenuKeyPressed
-
-    }//GEN-LAST:event_jMenu9MenuKeyPressed
-
-    private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
-        mostrarCobrarVenta();
-    }//GEN-LAST:event_jMenu9MouseClicked
-
-    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
-        mostraReporte();
-    }//GEN-LAST:event_jMenu8MouseClicked
 
     /**
      * @param args the command line arguments
@@ -507,7 +557,6 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
@@ -525,6 +574,8 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
