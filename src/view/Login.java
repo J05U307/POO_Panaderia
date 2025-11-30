@@ -35,15 +35,15 @@ public class Login extends javax.swing.JFrame {
             return;
         }
 
+        serviceRol.agregar("Administrador");
         serviceRol.agregar("Vendedor");
         serviceRol.agregar("Cajero");
-        serviceRol.agregar("Administrador");
 
         serviceEmpleado.agregar("Administrador", "Administrador", "00000000", "00000000", 0, LocalDate.of(2000, 01, 01), 0);
         serviceUsuario.agregar("admin", "admin", serviceEmpleado.listar().get(0), serviceRol.listar().get(0));
 
     }
-    
+
     private void login(String user, String pass) {
 
         for (Usuario u : serviceUsuario.listar()) {
@@ -141,7 +141,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserKeyPressed
-      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             txtPassword.requestFocus();
         }
     }//GEN-LAST:event_txtUserKeyPressed
