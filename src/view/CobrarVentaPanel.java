@@ -42,6 +42,12 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         checboxImprimir.setSelected(true);
         configurarTablaPedidos();
         configurarTablaDetallePedido();
+        
+        if (tablaDetallePedido.getColumnModel().getColumnCount() > 1) {
+            tablaDetallePedido.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setWidth(0);
+        }
         cargarCompoTipoPago();
         cargarComboComprobante();
         listarPedidosEnProceso();
@@ -230,6 +236,12 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                 de.getSubtotal()
             });
         }
+
+        if (tablaDetallePedido.getColumnModel().getColumnCount() > 1) {
+            tablaDetallePedido.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     public void listarPedidosEnProceso() {
@@ -263,6 +275,12 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                 pedido.getTotal(),
                 pedido.getEstado()
             });
+        }
+
+        if (tablaPedidos.getColumnModel().getColumnCount() > 1) {
+            tablaPedidos.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaPedidos.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaPedidos.getColumnModel().getColumn(0).setWidth(0);
         }
     }
 
@@ -342,6 +360,7 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
@@ -363,6 +382,8 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         btnHistorial = new javax.swing.JButton();
         tbnAnular = new javax.swing.JButton();
         checboxImprimir = new javax.swing.JCheckBox();
+
+        jToggleButton1.setText("jToggleButton1");
 
         jLabel1.setText("Cola de pedidos");
 
@@ -415,14 +436,19 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Informacion del Pedido");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Total");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Cliente");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Tipo Pago");
 
         comboTipoPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnPagar.setBackground(new java.awt.Color(204, 255, 204));
+        btnPagar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPagar.setText("PAGAR PEDIDO");
         btnPagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,10 +456,13 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Comprobante");
 
+        labelNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         labelNombreCliente.setText(".....");
 
+        labelTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         labelTotal.setText(".....");
 
         comboComprobante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -452,6 +481,8 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
             }
         });
 
+        tbnAnular.setBackground(new java.awt.Color(255, 153, 153));
+        tbnAnular.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tbnAnular.setText("ANULAR PEDIDO");
         tbnAnular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -459,6 +490,7 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
             }
         });
 
+        checboxImprimir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         checboxImprimir.setText("Imprimir Comprobante");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -466,22 +498,27 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
@@ -492,38 +529,39 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(labelTotal)
                                     .addComponent(labelNombreCliente)
-                                    .addComponent(comboTipoPago, 0, 169, Short.MAX_VALUE)
-                                    .addComponent(comboComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(comboTipoPago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(checboxImprimir)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(tbnAnular)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(tbnAnular, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnPagar)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(140, 140, 140))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton2)
-                    .addComponent(btnHistorial))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton2)
+                            .addComponent(btnHistorial))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(238, 238, 238)
+                                .addComponent(jLabel3))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addGap(21, 21, 21)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(labelNombreCliente))
@@ -532,20 +570,20 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
                             .addComponent(jLabel5)
                             .addComponent(labelTotal))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(comboTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(comboComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(20, 20, 20)
                         .addComponent(checboxImprimir)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tbnAnular)
-                            .addComponent(btnPagar))))
-                .addContainerGap(42, Short.MAX_VALUE))
+                            .addComponent(tbnAnular, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(63, 63, 63))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -606,6 +644,7 @@ public class CobrarVentaPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelNombreCliente;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JTable tablaDetallePedido;

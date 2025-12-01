@@ -177,6 +177,12 @@ public class ProductoPanel extends javax.swing.JPanel {
             };
             modelo.addRow(fila);
         }
+
+        if (tablaProducto.getColumnModel().getColumnCount() > 1) {
+            tablaProducto.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaProducto.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaProducto.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     public void cargarComboCategoria() {

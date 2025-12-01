@@ -327,7 +327,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="670" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="662" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -353,7 +353,7 @@
                       <Component id="labelRol" min="-2" pref="120" max="-2" attributes="0"/>
                       <Component id="labelUsuario" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="1091" max="32767" attributes="0"/>
+                  <EmptySpace pref="1080" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -378,21 +378,33 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Usuario:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelUsuario">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="nombreUser"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Rol:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelRol">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="nombreRol"/>
           </Properties>
         </Component>

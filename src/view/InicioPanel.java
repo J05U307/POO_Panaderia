@@ -4,17 +4,31 @@
  */
 package view;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author josue
  */
 public class InicioPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form InicioPanel
-     */
+    private Image backgroundImage;
+
     public InicioPanel() {
+        backgroundImage = new ImageIcon(getClass().getResource("/images/fondoNavidad.jpg")).getImage();
+
         initComponents();
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // DIBUJA LA IMAGEN AL TAMAÑO DEL PANEL
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 
     /**

@@ -114,6 +114,11 @@ public class TIpoPagoPanel extends javax.swing.JPanel {
             modelo.addRow(new Object[]{c.getId(), c.getNombre()});
         }
 
+        if (tablaPago.getColumnModel().getColumnCount() > 1) {
+            tablaPago.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaPago.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaPago.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     /**

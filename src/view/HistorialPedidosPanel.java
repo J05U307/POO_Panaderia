@@ -32,6 +32,13 @@ public class HistorialPedidosPanel extends javax.swing.JPanel {
         configurarTablaDetallePedido();
         configurarTablaPedidos();
         dateFecha.setDate(java.sql.Date.valueOf(LocalDate.now()));
+
+        if (tablaDetallePedido.getColumnModel().getColumnCount() > 1) {
+            tablaDetallePedido.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setWidth(0);
+        }
+        
         filtrarPedidosPorFecha();
         mostarInformacion();
         listenerjdata();
@@ -128,6 +135,12 @@ public class HistorialPedidosPanel extends javax.swing.JPanel {
                 de.getSubtotal()
             });
         }
+
+        if (tablaDetallePedido.getColumnModel().getColumnCount() > 1) {
+            tablaDetallePedido.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaDetallePedido.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     // LISTAR PEDIDOS
@@ -172,6 +185,13 @@ public class HistorialPedidosPanel extends javax.swing.JPanel {
                 pedido.getEstado()
             });
         }
+
+        if (tablaPedidos.getColumnModel().getColumnCount() > 1) {
+            tablaPedidos.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaPedidos.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaPedidos.getColumnModel().getColumn(0).setWidth(0);
+        }
+
     }
 
     private void configurarTablaPedidos() {

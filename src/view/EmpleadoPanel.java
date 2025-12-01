@@ -289,6 +289,18 @@ public class EmpleadoPanel extends javax.swing.JPanel {
             };
             modelo.addRow(fila);
         }
+
+        if (tablaEmpleado.getColumnModel().getColumnCount() > 1) {
+            tablaEmpleado.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaEmpleado.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaEmpleado.getColumnModel().getColumn(0).setWidth(0);
+        }
+
+        if (tablaEmpleado.getColumnModel().getColumnCount() > 1) {
+            tablaEmpleado.getColumnModel().getColumn(1).setMinWidth(0);
+            tablaEmpleado.getColumnModel().getColumn(1).setMaxWidth(0);
+            tablaEmpleado.getColumnModel().getColumn(1).setWidth(0);
+        }
     }
 
     /**

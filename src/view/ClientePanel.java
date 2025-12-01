@@ -139,6 +139,12 @@ public class ClientePanel extends javax.swing.JPanel {
             };
             modelo.addRow(fila);
         }
+
+        if (tablaCliente.getColumnModel().getColumnCount() > 1) {
+            tablaCliente.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaCliente.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaCliente.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     /**

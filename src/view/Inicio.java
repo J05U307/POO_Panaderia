@@ -239,17 +239,21 @@ public class Inicio extends javax.swing.JFrame {
         );
         Panel_cargaLayout.setVerticalGroup(
             Panel_cargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
+            .addGap(0, 662, Short.MAX_VALUE)
         );
 
         panelInformacion.setBackground(new java.awt.Color(204, 204, 204));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel1.setText("Usuario:");
 
+        labelUsuario.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         labelUsuario.setText("nombreUser");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel2.setText("Rol:");
 
+        labelRol.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         labelRol.setText("nombreRol");
 
         javax.swing.GroupLayout panelInformacionLayout = new javax.swing.GroupLayout(panelInformacion);
@@ -265,7 +269,7 @@ public class Inicio extends javax.swing.JFrame {
                 .addGroup(panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelUsuario))
-                .addContainerGap(1091, Short.MAX_VALUE))
+                .addContainerGap(1080, Short.MAX_VALUE))
         );
         panelInformacionLayout.setVerticalGroup(
             panelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

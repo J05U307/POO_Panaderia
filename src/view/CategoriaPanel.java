@@ -111,6 +111,12 @@ public class CategoriaPanel extends javax.swing.JPanel {
         for (Categoria c : service.listar()) {
             modelo.addRow(new Object[]{c.getId(), c.getNombre()});
         }
+
+        if (tablaCategoria.getColumnModel().getColumnCount() > 1) {
+            tablaCategoria.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaCategoria.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaCategoria.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 
     @SuppressWarnings("unchecked")

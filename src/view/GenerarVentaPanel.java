@@ -454,6 +454,8 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Pedido Actual");
 
+        btnCancelar.setBackground(new java.awt.Color(255, 153, 153));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -461,6 +463,8 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
             }
         });
 
+        btnEnviarCajero.setBackground(new java.awt.Color(204, 255, 204));
+        btnEnviarCajero.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnEnviarCajero.setText("Enviar  al Cajero");
         btnEnviarCajero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -496,12 +500,16 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
         ));
         jScrollPane5.setViewportView(tablaBuscarCliente);
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel5.setText("Total Venta");
 
+        labelTotal.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         labelTotal.setText(".....");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel6.setText("Cliente");
 
+        labelNombreCliente.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         labelNombreCliente.setText(".....");
 
         labelIDCliente.setText(".....");
@@ -559,7 +567,7 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel6))
                                     .addComponent(jLabel5))
-                                .addGap(136, 136, 136)
+                                .addGap(78, 78, 78)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelTotal, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(labelNombreCliente, javax.swing.GroupLayout.Alignment.TRAILING)))
@@ -593,7 +601,7 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
                             .addComponent(btnNuevoCliente))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 74, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -608,8 +616,8 @@ public class GenerarVentaPanel extends javax.swing.JPanel {
                             .addComponent(labelIDCliente))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEnviarCajero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEnviarCajero, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(37, 37, 37))))
         );
     }// </editor-fold>//GEN-END:initComponents
